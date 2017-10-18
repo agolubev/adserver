@@ -21,8 +21,8 @@ class AdRegistryActor extends Actor with ActorLogging {
 
   def createCampaign(campaign: Campaign): Boolean = {
     campaigns.get(campaign.partner_id) match {
-      case Some((_, time)) =>
-        if (System.currentTimeMillis() > campaign.duration * 1000 + time) {
+      case Some((old, time)) =>
+        if (System.currentTimeMillis() > old.duration * 1000 + time) {
           campaigns += campaign.partner_id -> (campaign, System.currentTimeMillis())
           true
         } else false
